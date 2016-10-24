@@ -412,10 +412,11 @@ imgAttrsToHtml opts attr =
     toAttrs (dimensionsToAttrList opts attr)
   where
     (ident,cls,kvs) = attr
-    kvs' = filter isNotDim kvs
-    isNotDim ("width", _)  = False
-    isNotDim ("height", _) = False
-    isNotDim _ = True
+    kvs' = filter isNotDimOrInternal kvs
+    isNotDimOrInternal ("width", _)  = False
+    isNotDimOrInternal ("height", _) = False
+    isNotDimOrInternal (name, _) | isPrefixOf "pandoc-" name = False
+    isNotDimOrInternal _             = True
 
 dimensionsToAttrList :: WriterOptions -> Attr -> [(String, String)]
 dimensionsToAttrList opts attr = (go Width) ++ (go Height)

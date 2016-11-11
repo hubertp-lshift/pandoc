@@ -466,7 +466,9 @@ inlineToDokuWiki _ (RawInline f str)
   | f == Format "html"     = return $ "<html>" ++ str ++ "</html>"
   | otherwise              = return ""
 
-inlineToDokuWiki _ (LineBreak) = return "\\\\\n"
+inlineToDokuWiki _ LineBreak = return "\\\\\n"
+
+inlineToDokuWiki _ PageBreak = return mempty
 
 inlineToDokuWiki opts SoftBreak =
   case writerWrapText opts of
